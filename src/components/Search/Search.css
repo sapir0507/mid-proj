@@ -1,0 +1,1 @@
+.searchBar{max-width:360px}.grid{display:grid;grid-template-areas:"search button"}.search{grid-area:search}.button{grid-area:button}

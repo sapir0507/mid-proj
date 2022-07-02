@@ -1,0 +1,15 @@
+
+.userSelected{  
+    background-color: lightsalmon;
+    &input{
+        background-color: lightsalmon;
+    }
+}
+
+
+.userUnselected{
+    background-color: white;
+    &input{
+        background-color: white;
+    }
+}
