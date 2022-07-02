@@ -3,7 +3,13 @@ import UserUtils from "./../../utils/UsersUtil";
 import './otherData.scss';
 
 function OtherData ({ userID, toggleOtherDataComponent }) {
-    const [otherData, setOtherData] = useState({})
+    const [otherData, setOtherData] = useState(null)
+    const [loadData, setLoadData] = useState(false)
+
+    useEffect(() => {
+      setLoadData(true)
+    }, [])
+    
     
     useEffect(() => {
         const getOtherData = async () => {
@@ -11,8 +17,8 @@ function OtherData ({ userID, toggleOtherDataComponent }) {
             console.log(data);
             setOtherData({street: data.street, city: data.city, zipCode: data.zipCode})
         }
-        if(userID!==undefined) getOtherData()
-    }, [userID])
+        if(loadData) getOtherData()
+    }, [loadData, userID])
 
     
 

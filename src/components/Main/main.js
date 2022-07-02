@@ -9,6 +9,7 @@ import TodoUtils from '../../utils/TodosUtil';
 import DATA from '../../data/data';
 function MainComp() {
     const [loaded, setLoaded] = useState(false)
+    const [searchInput, setSearchInput] = useState('')
     
 
     useEffect(()=>{
@@ -34,8 +35,8 @@ function MainComp() {
     <Container>
         {/* phone part */}
         <div className='phone'>
-            <Search></Search> 
-            <UserBaseComp></UserBaseComp>    
+            <Search filterResults={(data)=>{setSearchInput(data)}}></Search> 
+            <UserBaseComp searchInput={searchInput}></UserBaseComp>    
         </div>
         
     </Container> 

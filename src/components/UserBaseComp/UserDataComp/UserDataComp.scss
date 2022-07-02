@@ -1,6 +1,7 @@
 
 .userSelected{  
     background-color: lightsalmon;
+    padding: 5px;
     &input{
         background-color: lightsalmon;
     }
@@ -9,6 +10,7 @@
 
 .userUnselected{
     background-color: white;
+    padding: 5px;
     &input{
         background-color: white;
     }

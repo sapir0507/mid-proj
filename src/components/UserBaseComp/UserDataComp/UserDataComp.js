@@ -1,27 +1,48 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import Container from "react-bootstrap/Container";
+import DATA from "../../../data/data";
 import OtherData from "../../OtherData/otherData";
 import './UserDataComp.scss';
 
-function UserDataComp({userID, name, email}) {
+function UserDataComp({userID, name, email, myClasses, updateData, deleteData, userSelected}) {
     const [toggleOtherData, setToggleOtherData] = useState(false)
-    const [selected, setSelected] = useState(0);
-    const userSelected = (id) =>{
-        console.log('userSelected', id );
-        setSelected(id)
+    const [UserName, setUserName] = useState(name)
+    const [UserEmail, setUserEmail] = useState(email)
 
+    const userSelected1 = (id) =>{  
+        userSelected(id, userID) 
     }
-    const getClasses = (id) => {
-        return selected===id? "userSelected": "userUnselected"
+
+    const deleteUser = () => {
+          const users = DATA.users.filter((item)=>item.id!==userID)
+        DATA.users = users;
+        const userData = users.map((data)=>{
+            return {name: data.name, email: data.email, userID: data.id}
+        })
+        deleteData(userData);
     }
+
+    const updateUser = () => {
+        const users = DATA.users.map((item)=>{
+            const toReturn = item.id === userID? 
+            {...item, 
+            userID: userID,
+            name: UserName, 
+            email: UserEmail} : item
+            console.log(toReturn);
+            return toReturn;
+        })
+        DATA.users = users;
+        updateData(users);
+    }
+    
     return ( 
-    <Container className={getClasses(userID)}>
+    <Container className={myClasses}>
             <table>
                 <tbody>
                     <tr onClick={()=>{
-                       
-                        userSelected(userID)
+                        userSelected1(userID)
                     }}>
                         <td>ID: </td>
                         <td>{userID}</td>
@@ -30,11 +51,15 @@ function UserDataComp({userID, name, email}) {
                         <td>Name: </td>
                         <td><input
                         type="text" name="name" id="user name"
-                        value={name} /></td>
+                        value={UserName} 
+                        onChange={(e)=>{setUserName(e.target.value)}}
+                        /></td>
                     </tr>
                     <tr>
                         <td>Email: </td>
-                        <td><input type='email' name="email" id="user email" value={email} /></td>
+                        <td><input type='email' name="email" id="user email" 
+                        value={email} 
+                        onChange={(e)=>{setUserEmail(e.target.value)}}/></td>
                     </tr>  
                 </tbody>
             </table>
@@ -47,8 +72,8 @@ function UserDataComp({userID, name, email}) {
                 toggleOtherDataComponent={setToggleOtherData}
             ></OtherData>}
             <div className="container-fluid my-2">
-                <button className="btn btn-sm btn-warning">Update</button>
-                <button className="btn btn-sm btn-warning mx-1">Delete</button>
+                <button className="btn btn-sm btn-warning" onClick={()=>{updateUser()}}>Update</button>
+                <button className="btn btn-sm btn-warning mx-1" onClick={()=>{deleteUser()}}>Delete</button>
             </div>
             
     </Container> );
