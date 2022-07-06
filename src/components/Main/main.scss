@@ -1,11 +1,17 @@
-.phone{
-    max-width: 360px;
-    max-height: 787px;
+$grid-item-max-height: 795px;
+$grid-item-max-width: 360px;
+
+.gridContainer{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  .phone{
+    max-width: $grid-item-max-width;
+    max-height: $grid-item-max-height;
     box-sizing: border-box;
     margin: 20px;
     padding: 10px;
     border: 1px solid black;
-    border-radius: 20px;
+    border-radius: 30px;
     overflow-y: auto;
     /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
@@ -15,4 +21,25 @@
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+  .sideComp{
+    box-sizing: border-box;
+    max-width: 600px;
+    max-height: $grid-item-max-height;
+    margin: 20px;
+    padding: 10px;
+    overflow-y: auto;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    .mainPosts{
+      margin-top: 50px;
+      max-height: calc($grid-item-max-height/2);
+      
+    }
+    .mainTodos{
+      max-width: 600px;
+      max-height: calc($grid-item-max-height/2);
+    }
+  }
 }

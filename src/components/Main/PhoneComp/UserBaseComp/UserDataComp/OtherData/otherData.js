@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import UserUtils from "./../../utils/UsersUtil";
+import DATA from "../../../../../../data/data";
 import './otherData.scss';
 
 function OtherData ({ userID, toggleOtherDataComponent }) {
@@ -11,13 +11,17 @@ function OtherData ({ userID, toggleOtherDataComponent }) {
     }, [])
     
     
-    useEffect(() => {
-        const getOtherData = async () => {
-            const data = await UserUtils.getOtherData(userID);
-            console.log(data);
-            setOtherData({street: data.street, city: data.city, zipCode: data.zipCode})
+    useEffect(()=>{
+        if(loadData && userID){
+            const users = [...DATA.users];
+            const Userdata = users.filter(user=>user.id===userID);
+            const data = Userdata[0].address;
+            if(data!==undefined) setOtherData({
+                street: data.street, 
+                city: data.city, 
+                zipCode: data.zipcode
+            })
         }
-        if(loadData) getOtherData()
     }, [loadData, userID])
 
     

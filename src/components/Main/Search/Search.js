@@ -1,7 +1,7 @@
 import { Container } from "react-bootstrap";
 import './Search.scss';
 
-function Search({filterResults}) {
+function Search({filterResults, createNewUser}) {
     return ( 
     <Container className="grid">
         <div className="input-group search">
@@ -12,7 +12,9 @@ function Search({filterResults}) {
             className="form-control" 
             onChange={(e)=>{filterResults(e.target.value)}}/>
         </div>
-        <div className="button"><input type="button" value="Add" className="btn mx-1 btn-warning" /></div>
+        <div className="button">
+            <input type="button" value="Add" className="btn mx-1 btn-warning" onClick={createNewUser}/>
+        </div>
        
     </Container>
     );

@@ -1,0 +1,1 @@
+.todosNav{display:flex;justify-content:space-between;align-items:center}.wrapper{box-sizing:border-box;padding:10px;margin:5px;border:1px solid #000;max-height:327.5px;overflow-y:auto;-ms-overflow-style:none;scrollbar-width:none}.wrapper::-webkit-scrollbar{display:none}.myGrid{display:grid;place-content:center}

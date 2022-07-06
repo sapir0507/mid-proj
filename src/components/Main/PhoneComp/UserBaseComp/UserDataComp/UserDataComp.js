@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import DATA from "../../../data/data";
-import OtherData from "../../OtherData/otherData";
+import DATA from "../../../../../data/data";
+import OtherData from "./OtherData/otherData";
 import './UserDataComp.scss';
 
 function UserDataComp({userID, name, email, myClasses, updateData, deleteData, userSelected}) {
@@ -10,12 +10,18 @@ function UserDataComp({userID, name, email, myClasses, updateData, deleteData, u
     const [UserName, setUserName] = useState(name)
     const [UserEmail, setUserEmail] = useState(email)
 
+    useEffect(() => {
+      setUserName(name)
+      setUserEmail(email)
+    }, [email, name])
+    
+
     const userSelected1 = (id) =>{  
         userSelected(id, userID) 
     }
 
     const deleteUser = () => {
-          const users = DATA.users.filter((item)=>item.id!==userID)
+        const users = DATA.users.filter((item)=>item.id!==userID)
         DATA.users = users;
         const userData = users.map((data)=>{
             return {name: data.name, email: data.email, userID: data.id}
@@ -25,13 +31,11 @@ function UserDataComp({userID, name, email, myClasses, updateData, deleteData, u
 
     const updateUser = () => {
         const users = DATA.users.map((item)=>{
-            const toReturn = item.id === userID? 
+            return  item.id === userID? 
             {...item, 
-            userID: userID,
+            userID: item.id,
             name: UserName, 
-            email: UserEmail} : item
-            console.log(toReturn);
-            return toReturn;
+            email: UserEmail} : {...item}
         })
         DATA.users = users;
         updateData(users);
@@ -50,7 +54,7 @@ function UserDataComp({userID, name, email, myClasses, updateData, deleteData, u
                     <tr>
                         <td>Name: </td>
                         <td><input
-                        type="text" name="name" id="user name"
+                        type="text" name="user name" id="user name"
                         value={UserName} 
                         onChange={(e)=>{setUserName(e.target.value)}}
                         /></td>
@@ -58,7 +62,7 @@ function UserDataComp({userID, name, email, myClasses, updateData, deleteData, u
                     <tr>
                         <td>Email: </td>
                         <td><input type='email' name="email" id="user email" 
-                        value={email} 
+                        value={UserEmail} 
                         onChange={(e)=>{setUserEmail(e.target.value)}}/></td>
                     </tr>  
                 </tbody>

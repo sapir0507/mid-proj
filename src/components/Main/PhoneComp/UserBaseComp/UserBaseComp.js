@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import DATA from "../../data/data";
-import UserUtils from "../../utils/UsersUtil";
+import DATA from '../../../../data/data';
+import UserUtils from '../../../../utils/UsersUtil';
 import './UserBaseComp.scss';
 import UserDataComp from "./UserDataComp/UserDataComp";
+
 var classNames = require('classnames');
 
-function UserBaseComp({searchInput}) {
+function UserBaseComp({searchInput, selectedUser}) {
     const [myUserSelected, setMyUserSelected] = useState(-1)
     const [userData, setUserData] = useState([])
     const [filteredUserData, setFilteredUserData] = useState([])
@@ -27,69 +28,66 @@ function UserBaseComp({searchInput}) {
         borderGreen: false
     }))
 
-    const userSelected=(id)=>{
-        console.log("hello from parent of id: ", id)
-        setMyUserSelected(id)
+    const userSelected=(userID)=>{
+        setMyUserSelected(userID)
         const myclass = classNames({
             userSelected: true,
-            borderRed: !!getBorderColor(id),
-            borderGreen: !getBorderColor(id)
+            borderRed: !!getBorderColor(userID),
+            borderGreen: !getBorderColor(userID)
         })
         setMyClasses(myclass)
+        selectedUser(userID)
     }
 
     useEffect(() => {
+
         const getUsersData = async()=>{
             const data = await UserUtils.GetUserNameIDAndEmail()
             setUserData(data)
             setFilteredUserData(data)
         }
-        
+
         if(DATA && DATA.users && DATA.users.length > 0){
-            const usersdata = DATA.users;
+            const usersdata = [...DATA.users];
             const res = usersdata.map((user)=>{
                 return {
                     name: user.name,
                     email: user.email,
-                    id: user.id
+                    userID: user.id
                 }
             })
-             setUserData(res)
-             setFilteredUserData(res)
+            setUserData(res)
+            setFilteredUserData(res)
         }
         else 
             getUsersData()
 
     }, [])
 
-    useEffect(() => {
-        if(searchInput!=='')
-        {
+    useEffect(()=>{
+        setUserData(DATA.users)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [DATA.users])
+
+    useEffect(() => {  
+        const FilterData = () => {
             const filteredData = userData.filter(user=>{
                 const name = user.name
                 const email = user.email
                 return ((name.toLowerCase()).includes(searchInput.toLowerCase()) || (email.toLowerCase()).includes(searchInput.toLowerCase()))
             })
-            console.log("filtered data:", filteredData)
             setFilteredUserData(filteredData)
-        }
-        else{
-            setFilteredUserData(userData)
-        }
-    }, [searchInput])
+        }      
+        FilterData()
+    }, [searchInput, userData])
     
     
     return ( 
     <Container>
        {userData.length > 0 && filteredUserData.map((item, index)=>{
-        const border = classNames({
-            userUnselected: true,
-            borderRed: !!getBorderColor(item.id),
-            borderGreen: !getBorderColor(item.id)
-        })
         return <div className="UserInfo" key={index}>
             <UserDataComp 
-            userID={item.userID} 
+            userID={item.id} 
             name={item.name} 
             email={item.email}
             updateData={(data)=>{
@@ -100,9 +98,13 @@ function UserBaseComp({searchInput}) {
                 setUserData(data); 
                 setFilteredUserData(data);
             }}
-            myClasses={myUserSelected===item.userID? myClasses: 'userUnselected borderRed'}
-            userSelected={(id)=>{
-                userSelected(id)
+            myClasses={myUserSelected===item.userID? myClasses: `userUnselected ${classNames({
+                userUnselected: true,
+                borderRed: !!getBorderColor(item.userID),
+                borderGreen: !getBorderColor(item.userID)
+            })}`}
+            userSelected={(userID)=>{
+                userSelected(userID)
             }}
             ></UserDataComp>
         </div>
