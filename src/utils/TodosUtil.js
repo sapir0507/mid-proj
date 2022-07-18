@@ -25,16 +25,18 @@ const getUserTodos = (id) => {
     return axios.get(url + `?userId=${id}`)
 }
 
-const updateTodos = (todoID, newTodo) => {
-    DATA.todos.forEach((todo)=>{
-        if(todo.id===todoID)
+const updateTodos = (userID, newTodo) => {
+    DATA.todos = DATA.todos.map((todo)=>{
+        if(todo.id===newTodo.id && todo.userId===newTodo.userID)
         {
             todo = {...todo, 
                 title: newTodo.title,
                 completed: newTodo.completed
                   
             }
+            return todo;
         }
+        return todo;
     })
    // localStorage['todos'] = DATA.todos;
 }

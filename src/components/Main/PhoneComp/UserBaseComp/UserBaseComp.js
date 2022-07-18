@@ -8,11 +8,10 @@ import UserDataComp from "./UserDataComp/UserDataComp";
 
 var classNames = require('classnames');
 
-function UserBaseComp({searchInput, selectedUser}) {
+function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
     const [myUserSelected, setMyUserSelected] = useState(-1)
     const [userData, setUserData] = useState([])
     const [filteredUserData, setFilteredUserData] = useState([])
-
 
     const getBorderColor = async(userID) => {
         const todos = DATA.todos;
@@ -24,16 +23,16 @@ function UserBaseComp({searchInput, selectedUser}) {
 
     const [myClasses, setMyClasses] = useState(classNames({
         userUnselected: true,
-        borderRed: true,
-        borderGreen: false
+        // borderRed: true,
+        // borderGreen: false
     }))
 
     const userSelected=(userID)=>{
         setMyUserSelected(userID)
         const myclass = classNames({
             userSelected: true,
-            borderRed: !!getBorderColor(userID),
-            borderGreen: !getBorderColor(userID)
+            // borderRed: !!getBorderColor(userID),
+            // borderGreen: !getBorderColor(userID)
         })
         setMyClasses(myclass)
         selectedUser(userID)
@@ -51,6 +50,7 @@ function UserBaseComp({searchInput, selectedUser}) {
             const usersdata = [...DATA.users];
             const res = usersdata.map((user)=>{
                 return {
+                    id: user.id,
                     name: user.name,
                     email: user.email,
                     userID: user.id
@@ -80,6 +80,26 @@ function UserBaseComp({searchInput, selectedUser}) {
         }      
         FilterData()
     }, [searchInput, userData])
+
+    useEffect(()=>{
+        if(status){
+            console.log("user base comp, update todos changed")
+            updateTodos(false)
+        }
+    },[status, updateTodos])
+    // useEffect(()=>{
+
+    //     const userIDs = DATA.users.map((user)=>{return user.id});
+    //     userIDs.forEach(id => {
+    //         const myclass = classNames({
+    //             userSelected: true,
+    //             borderRed: !!getBorderColor(id),
+    //             borderGreen: !getBorderColor(id)
+    //         })
+    //     });
+
+    //     // setMyClasses(myclass)
+    // },[updateTodos])
     
     
     return ( 
@@ -98,11 +118,16 @@ function UserBaseComp({searchInput, selectedUser}) {
                 setUserData(data); 
                 setFilteredUserData(data);
             }}
-            myClasses={myUserSelected===item.userID? myClasses: `userUnselected ${classNames({
-                userUnselected: true,
-                borderRed: !!getBorderColor(item.userID),
-                borderGreen: !getBorderColor(item.userID)
-            })}`}
+            myClasses={updateTodos}
+            // myClasses={myUserSelected===item.userID? `${classNames({
+            //     userUnselected: false,
+            //     borderRed:  !!getBorderColor(item.userID),
+            //     borderGreen: !getBorderColor(item.userID)
+            // })}`: `userUnselected ${classNames({
+            //     userUnselected: true,
+            //     borderRed: !!getBorderColor(item.userID),
+            //     borderGreen: !getBorderColor(item.userID)
+            // })}`}
             userSelected={(userID)=>{
                 userSelected(userID)
             }}

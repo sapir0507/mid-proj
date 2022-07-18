@@ -16,6 +16,7 @@ function MainComp() {
     const [isAddUser, setIsAddUser] = useState(false)
     const [searchInput, setSearchInput] = useState('')
     const [selectedUser, setSelectedUser] = useState(-1)
+    const [updateTodos, setUpdateTodos] = useState(false)
 
     useEffect(()=>{
         setLoaded(true)
@@ -26,7 +27,6 @@ function MainComp() {
             const users1 = await UserUtils.getUsers();
             const posts = await PostUtils.getPosts();
             const todos = await TodoUtils.getTodos();
-            
             DATA.users=users1.data;
             DATA.posts=posts.data;
             DATA.todos=todos.data;
@@ -54,14 +54,17 @@ function MainComp() {
                         setIsAddUser(true)
                     }}
                 ></Search> 
-                <UserBaseComp searchInput={searchInput} selectedUser={(data)=>{setSelectedUser(data)}}></UserBaseComp>    
+                <UserBaseComp searchInput={searchInput} selectedUser={(data)=>{setSelectedUser(data)}} updateTodos={(status)=>{setUpdateTodos(status)}} status={updateTodos}></UserBaseComp>    
             </div>
             {/* side component */}
             <div className='sideComp'>
             {!isAddUser && selectedUser >= 0 &&
             <div>
                 <Container className='mainTodos'>
-                    <TodosComp userID={selectedUser}></TodosComp>
+                    <TodosComp userID={selectedUser} updateTodos={(status)=>{
+                        setUpdateTodos(status)
+                        console.log("main, set update todos as:", status)
+                    }}></TodosComp>
                 </Container>
                 <Container className='mainPosts'>
                     <PostsComp userID={selectedUser}></PostsComp>

@@ -5,15 +5,35 @@ import DATA from "../../../../../data/data";
 import OtherData from "./OtherData/otherData";
 import './UserDataComp.scss';
 
+var classNames = require('classnames');
+
+
 function UserDataComp({userID, name, email, myClasses, updateData, deleteData, userSelected}) {
     const [toggleOtherData, setToggleOtherData] = useState(false)
     const [UserName, setUserName] = useState(name)
     const [UserEmail, setUserEmail] = useState(email)
+    const [_class, set_Class] = useState(classNames({
+        borderRed: true,
+        borderGreen: false 
+    }))
 
     useEffect(() => {
       setUserName(name)
       setUserEmail(email)
     }, [email, name])
+
+    useEffect(()=>{
+        const data1 = DATA.todos.filter(todo=>todo.userId===userID)
+        const data2 = data1.filter(todo=>todo.completed===true)
+        if(data1.length === data2.length)
+        {
+            let myclass = classNames({
+                            borderRed: data1.length!==data2.length,
+                            borderGreen: data1.length===data2.length 
+            })
+            set_Class(myclass)
+        }
+    },[myClasses, userID])
     
 
     const userSelected1 = (id) =>{  
@@ -42,7 +62,7 @@ function UserDataComp({userID, name, email, myClasses, updateData, deleteData, u
     }
     
     return ( 
-    <Container className={myClasses}>
+    <Container className={`${_class}`}>
             <table>
                 <tbody>
                     <tr onClick={()=>{

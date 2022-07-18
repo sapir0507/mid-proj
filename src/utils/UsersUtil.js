@@ -42,6 +42,7 @@ const GetUserNameIDAndEmail = async() => {
     const data = users.data;
     const item = data.map((user)=>{
         return {
+            id: user.id,
             userID: user.id,
             name: user.name,
             email: user.email

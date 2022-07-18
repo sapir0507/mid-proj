@@ -4,22 +4,26 @@ import Container from "react-bootstrap/Container";
 import TodoUtils from '../../../../../utils/TodosUtil';
 import './ChildTodo.scss';
 
-function ChildTodo({todoId, title, completed}) {
+function ChildTodo({id, todoId: userID, title, completed, updateTodos}) {
     const [_completed, set_Completed] = useState(completed)
 
     useEffect(() => {
       set_Completed(completed)
-    }, [completed, todoId])
+    }, [completed, userID])
     
 
     const todoCompleted = () => {
         const newTodo = {
-            userID: todoId,
+            id: id,
+            userID: userID,
             title: title,
             completed: true
         }
-        TodoUtils.updateTodos(todoId, newTodo);
+        TodoUtils.updateTodos(userID, newTodo);
         set_Completed("True")
+        if(updateTodos!==undefined){
+            updateTodos(true);
+        }
     }
 
     return ( <Container className="childTodo">

@@ -5,7 +5,7 @@ import DATA from '../../../../data/data';
 import ChildTodo from './ChildTodo.js/ChildTodo';
 import './todos.scss';
 
-function TodosComp({userID}) {
+function TodosComp({userID, updateTodos}) {
     const [todos, setTodos] = useState([])
     const [title, setTitle] = useState('')
     const [createNewTodo, setCreateNewTodo] = useState(false)
@@ -43,9 +43,11 @@ function TodosComp({userID}) {
             {!createNewTodo && todos && todos.map((todo, index)=>{
                 return <ChildTodo 
                             key={index}
+                            id={todo.id}
                             todoId={todo.userId} 
                             title={todo.title} 
                             completed={todo.completed? "True": "False"}
+                            updateTodos={updateTodos}
                         ></ChildTodo>
 
             })}
