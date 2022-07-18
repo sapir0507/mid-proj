@@ -26,6 +26,7 @@ function UserDataComp({userID, name, email, myClasses, currentSelectedUser, upda
     useEffect(()=>{
         const data1 = DATA.todos.filter(todo=>todo.userId===userID)
         const data2 = data1.filter(todo=>todo.completed===true)
+        
         if(data1.length>0 && data2.length>0)
         {
             let myclass = classNames({
@@ -66,7 +67,7 @@ function UserDataComp({userID, name, email, myClasses, currentSelectedUser, upda
     
     return ( 
     <Container className={`${_class}`}>
-            <table>
+            <table id="userDataComp">
                 <tbody>
                     <tr onClick={()=>{
                         userSelected1(userID)

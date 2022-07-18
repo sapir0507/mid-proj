@@ -13,32 +13,19 @@ function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
     const [userData, setUserData] = useState([])
     const [filteredUserData, setFilteredUserData] = useState([])
 
-    const getBorderColor = async(userID) => {
-        const todos = DATA.todos;
-        const isFinished = todos.filter(todo => {
-            return (todo.userId === userID && todo.completed === false)
-        })
-        return isFinished.length > 0? true: false;
-    }
-
     const [myClasses, setMyClasses] = useState(classNames({
         userUnselected: true,
         userSelected: false,
-        // borderRed: true,
-        // borderGreen: false
     }))
 
     const userSelected=(userID)=>{
         const myclass = classNames({
             userSelected: true,
             userUnselected: false,
-            // borderRed: !!getBorderColor(userID),
-            // borderGreen: !getBorderColor(userID)
         })
         setMyClasses(myclass)
         selectedUser(userID)
         setMyUserSelected(userID)
-
     }
 
     useEffect(() => {
@@ -90,19 +77,6 @@ function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
             updateTodos(false)
         }
     },[status, updateTodos])
-    // useEffect(()=>{
-
-    //     const userIDs = DATA.users.map((user)=>{return user.id});
-    //     userIDs.forEach(id => {
-    //         const myclass = classNames({
-    //             userSelected: true,
-    //             borderRed: !!getBorderColor(id),
-    //             borderGreen: !getBorderColor(id)
-    //         })
-    //     });
-
-    //     // setMyClasses(myclass)
-    // },[updateTodos])
     
     
     return ( 
@@ -124,11 +98,6 @@ function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
             changeClass={updateTodos}
             currentSelectedUser = {myUserSelected}
             myClasses={myClasses}
-            // myClasses={myUserSelected===item.userID? `${classNames({
-            //     userUnselected: false,
-            // })}`: `userUnselected ${classNames({
-            //     userUnselected: true,
-            // })}`}
             userSelected={(userID)=>{
                 userSelected(userID)
             }}

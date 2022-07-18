@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-// import TodoUtils from "../../../utils/TodosUtil";
 import TodoUtils from '../../../../../utils/TodosUtil';
 import './ChildTodo.scss';
 

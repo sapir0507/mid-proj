@@ -29,6 +29,7 @@ function TodosComp({userID, updateTodos}) {
 
         DATA.todos.push(newTodo)
         setCreateNewTodo(false);
+        updateTodos(true);
      }
     
     return ( <Container>
