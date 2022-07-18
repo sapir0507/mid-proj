@@ -23,19 +23,22 @@ function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
 
     const [myClasses, setMyClasses] = useState(classNames({
         userUnselected: true,
+        userSelected: false,
         // borderRed: true,
         // borderGreen: false
     }))
 
     const userSelected=(userID)=>{
-        setMyUserSelected(userID)
         const myclass = classNames({
             userSelected: true,
+            userUnselected: false,
             // borderRed: !!getBorderColor(userID),
             // borderGreen: !getBorderColor(userID)
         })
         setMyClasses(myclass)
         selectedUser(userID)
+        setMyUserSelected(userID)
+
     }
 
     useEffect(() => {
@@ -105,7 +108,7 @@ function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
     return ( 
     <Container>
        {userData.length > 0 && filteredUserData.map((item, index)=>{
-        return <div className="UserInfo" key={index}>
+        return <div className={`UserInfo`} key={index}>
             <UserDataComp 
             userID={item.id} 
             name={item.name} 
@@ -118,15 +121,13 @@ function UserBaseComp({searchInput, selectedUser, updateTodos, status}) {
                 setUserData(data); 
                 setFilteredUserData(data);
             }}
-            myClasses={updateTodos}
+            changeClass={updateTodos}
+            currentSelectedUser = {myUserSelected}
+            myClasses={myClasses}
             // myClasses={myUserSelected===item.userID? `${classNames({
             //     userUnselected: false,
-            //     borderRed:  !!getBorderColor(item.userID),
-            //     borderGreen: !getBorderColor(item.userID)
             // })}`: `userUnselected ${classNames({
             //     userUnselected: true,
-            //     borderRed: !!getBorderColor(item.userID),
-            //     borderGreen: !getBorderColor(item.userID)
             // })}`}
             userSelected={(userID)=>{
                 userSelected(userID)

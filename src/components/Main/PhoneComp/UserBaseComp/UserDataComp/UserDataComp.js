@@ -8,11 +8,12 @@ import './UserDataComp.scss';
 var classNames = require('classnames');
 
 
-function UserDataComp({userID, name, email, myClasses, updateData, deleteData, userSelected}) {
+function UserDataComp({userID, name, email, myClasses, currentSelectedUser, updateData, deleteData, userSelected, changeClass}) {
     const [toggleOtherData, setToggleOtherData] = useState(false)
     const [UserName, setUserName] = useState(name)
     const [UserEmail, setUserEmail] = useState(email)
     const [_class, set_Class] = useState(classNames({
+        userSelected: currentSelectedUser===userID,
         borderRed: true,
         borderGreen: false 
     }))
@@ -25,15 +26,17 @@ function UserDataComp({userID, name, email, myClasses, updateData, deleteData, u
     useEffect(()=>{
         const data1 = DATA.todos.filter(todo=>todo.userId===userID)
         const data2 = data1.filter(todo=>todo.completed===true)
-        if(data1.length === data2.length)
+        if(data1.length>0 && data2.length>0)
         {
             let myclass = classNames({
+                            userSelected: currentSelectedUser===userID,
                             borderRed: data1.length!==data2.length,
                             borderGreen: data1.length===data2.length 
             })
             set_Class(myclass)
         }
-    },[myClasses, userID])
+        
+    },[changeClass, currentSelectedUser, userID])
     
 
     const userSelected1 = (id) =>{  
